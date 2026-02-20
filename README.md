@@ -113,7 +113,7 @@ processor.process_all_traces(export_as_json=True, export_as_xes=True)
 **Export Formats:**
 - **CSV** (default): Standard format for spreadsheet and data analysis tools
 - **JSON**: Structured format for programmatic processing
-- **XES**: IEEE standard format for process mining tools (ProM, Disco, pm4py, etc.)
+- **XES**: IEEE standard format for process mining tools (ProM, pm4py, etc.)
 
 The XES format includes standard XES extensions (concept, time, org, identity) plus a custom AI extension for agent-specific attributes, with full compatibility with major process mining tools.
 
@@ -122,7 +122,7 @@ Generated files are saved in the `generated_event_log/` folder.
 ### Analyzing with Process Mining Tools
 
 The generated CSV files can be imported into:
-- **Open Source**: [ProM](http://www.promtools.org/), [pm4py](https://pm4py.fit.fraunhofer.de/), [Disco](https://fluxicon.com/disco/)
+- **Open Source**: [ProM](http://www.promtools.org/), [pm4py](https://pm4py.fit.fraunhofer.de/)
 - **Commercial**: Any process mining platform supporting CSV import
 
 **Column Configuration:**

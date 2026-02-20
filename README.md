@@ -19,12 +19,12 @@ For theoretical background on Agent Behavior Mining, the invisible autonomy risk
 ## Features
 
 - **Multi-Agent System**: Complete implementation using LangGraph and LangChain
-- **Automatic Trace Collection**: Captures all agent activities via MLflow
+- **Automatic Trace Collection**: Captures all agent activities 
 - **Event Log Generation**: Converts agent traces to standardized process logs
-- **CSV Export**: Event logs compatible with any process mining tool
+- **XES and CSV Export**: Event logs compatible with any process mining tool
 - **Interactive Interface**: Jupyter notebook-based user interface
 - **Three Exercises**: Guided tutorials covering standard operations, exception handling, and system extension
-- **Process Mining Ready**: Pre-configured for analysis with ProM, pm4py, Disco, or commercial tools
+- **Process Mining Ready**: Usable for analysis with ProM, pm4py, or commercial tools
 
 
 ## Requirements

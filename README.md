@@ -1,51 +1,196 @@
-# BTM161 - AI agent mining and governance with SAP Signavio solutions
+# Agent Behavior Mining: Implementation Repository
 
-## Description
-This repository hosts the (self-contained but simplified) material for the SAP TechEd 2025 session "BTM161 - AI agent mining and governance with SAP Signavio solutions"
+This repository contains the implementation of the Agent Behavior Mining (ABM) scenario described in the paper **"Agent Behavior Mining: Generative AI Agent Governance in Business Processes"**.
 
 ## Overview
-This SAP Sample introduces attendees to analyzing the behavior of LLM-based multi-agent systems with [SAP Signavio Process Intelligence](https://www.signavio.com/products/process-intelligence/). Within three Jupyter notebooks of an agentic coffee shop, specialized agents work together to provide a complete coffee shop experience. Each agent has specific tools and responsibilities, and they intelligently hand off to each other based on the situation to serve the "best" coffee for its customers. The interactions with the coffee shop and the actions taken by the agents are logged and, afterwards, can be analyzed by generating event logs suitable for process mining with SAP Signavio Process Intelligence.
 
-Please be aware that this repository includes a simplified version which generates CSV-files that can be easily consumed by your own SAP Signavio Process Intelligence. This will allow you to try this self-contained version on your own afterwards as well adapt it to your needs but it will not include all features that have been presented at TechEd.
+This implementation demonstrates how to render generative AI agent behavior observable and accountable through process mining techniques. The repository provides a complete multi-agent Order-to-Cash (O2C) system where specialized agents work together to manage a coffee shop, with full traceability of their decision-making processes.
 
-For the TechEd hands-on session, we will host a dedicated Jupyter notebook instance, offer access to SAP Signavio Process Intelligence, and several advanced agent mining features in a dedicated service. 
+## Core Concepts
+
+For theoretical background on Agent Behavior Mining, the invisible autonomy risk, and the event data model, please refer to the research paper. This repository focuses on the practical implementation.
+
+**The Multi-Agent Coffee Shop System includes:**
+- **Order Agent** - Takes and processes customer orders
+- **Inventory Agent** - Manages stock levels and availability
+- **Barista Agent** - Handles order preparation and quality
+- **Customer Service Agent** - Manages customer satisfaction and issue resolution
+
+## Features
+
+- **Multi-Agent System**: Complete implementation using LangGraph and LangChain
+- **Automatic Trace Collection**: Captures all agent activities via MLflow
+- **Event Log Generation**: Converts agent traces to standardized process logs
+- **CSV Export**: Event logs compatible with any process mining tool
+- **Interactive Interface**: Jupyter notebook-based user interface
+- **Three Exercises**: Guided tutorials covering standard operations, exception handling, and system extension
+- **Process Mining Ready**: Pre-configured for analysis with ProM, pm4py, Disco, or commercial tools
+
 
 ## Requirements
 
-This section covers the prerequisites and the installation process required for running the coffee shop MAS.
-
 ### Prerequisites
 - [Python](https://www.python.org/downloads/) >= 3.13
-- (Recommended) [poetry](https://python-poetry.org/) is used for managing packages and the virtual environment and needs to be [installed](https://python-poetry.org/docs/#installing-with-pipx).
-    - Alternative: Use pip to install the dependencies based on the provided `requirements.txt`.
-- (Recommended) Use the [poetry-jupyter-plugin](https://pypi.org/project/poetry-jupyter-plugin/) to install the virtual environment created by Poetry as a Jupyter kernel:
-    ```
-    $ poetry self add poetry-jupyter-plugin
-    ```
-    - Alternative: Set up the Jupyter kernel manually.
-- You need an API key for an [LLM provider supported by LangChain](https://python.langchain.com/docs/integrations/chat/#featured-providers).
+- (Recommended) [poetry](https://python-poetry.org/) for managing packages and virtual environment - [Installation guide](https://python-poetry.org/docs/#installing-with-pipx)
+  - Alternative: Use pip with the provided `requirements.txt`
+- (Recommended) [poetry-jupyter-plugin](https://pypi.org/project/poetry-jupyter-plugin/) to install the virtual environment as a Jupyter kernel:
+  ```bash
+  poetry self add poetry-jupyter-plugin
+  ```
+  - Alternative: Set up the Jupyter kernel manually
+- API key for an [LLM provider supported by LangChain](https://python.langchain.com/docs/integrations/chat/#featured-providers) (e.g., OpenAI, Anthropic, etc.)
 
 ### Installation
-1. Install the project by running `poetry install` in this directory.
-1. Install a Juypter kernel via poetry by running `poetry jupyter install`.
-1. Activate the virtual environment created by poetry. To obtain the appropriate activation command for this run `poetry env activate`. (Alternative: Prefix all subsequent commands with `poetry run`, which will execute the command in the virtual environment.)
-1. Install the appropriate langchain integration package fitting your supported LLM provider:
-    1. Identify the name of the package using the [documentation](https://github.com/langchain-ai/langgraph/blob/a10a66cbd151c92f89d6476fb70e5e405ce50b98/docs/docs/snippets/chat_model_tabs.md)), e.g., `langchain[openai]` or `langchain[anthropic]`.
-    2. Install the package _in the version fitting this repository_ by adjusting and running `pip install "langchain[PROVIDER]<1.0.0"`, e.g., `pip install "langchain[openai]<1.0.0"` or `pip install "langchain[anthropic]<1.0.0"`.
-3. Open `src/coffee_shop.py` and, starting line 20, configure access to the LLM, like credentials or API keys, according to the [documentation](https://github.com/langchain-ai/langgraph/blob/a10a66cbd151c92f89d6476fb70e5e405ce50b98/docs/docs/snippets/chat_model_tabs.md).
-1. Start the Jupyter server by running `jupyter notebook`.
-1. Now, you should be able to open and run the first notebook: `1_Standard_agentic_coffee_shop.ipynb`.
+
+1. **Install the project dependencies:**
+   ```bash
+   poetry install
+   ```
+
+2. **Install Jupyter kernel via poetry:**
+   ```bash
+   poetry jupyter install
+   ```
+
+3. **Activate the virtual environment:**
+   ```bash
+   poetry shell
+   ```
+   Alternative: Prefix all subsequent commands with `poetry run`
+
+4. **Install LangChain integration for your LLM provider:**
+   
+   Identify the package name from the [documentation](https://github.com/langchain-ai/langgraph/blob/a10a66cbd151c92f89d6476fb70e5e405ce50b98/docs/docs/snippets/chat_model_tabs.md), then install it:
+   ```bash
+   pip install "langchain[PROVIDER]<1.0.0"
+   ```
+   
+   Examples:
+   - OpenAI: `pip install "langchain[openai]<1.0.0"`
+   - Anthropic: `pip install "langchain[anthropic]<1.0.0"`
+
+5. **Configure LLM access:**
+   
+   Open `src/coffee_shop.py` and configure your LLM credentials starting at line 20, following the [LangChain documentation](https://github.com/langchain-ai/langgraph/blob/a10a66cbd151c92f89d6476fb70e5e405ce50b98/docs/docs/snippets/chat_model_tabs.md).
+
+6. **Start Jupyter:**
+   ```bash
+   jupyter notebook
+   ```
+
+7. **Open the first notebook:**
+   
+   Navigate to `1_Standard_agentic_coffee_shop.ipynb` and start exploring!
+
+## Quick Start
+
+### Running the Coffee Shop
+
+1. Open `1_Standard_agentic_coffee_shop.ipynb`
+2. Follow the step-by-step instructions in the notebook
+3. Interact with the multi-agent system through the chat interface
+4. Generate traces of agent behavior automatically
+
+### Generating Event Logs
+
+After interacting with the coffee shop:
+
+```python
+from src import TraceProcessor
+
+processor = TraceProcessor()
+
+# Export as CSV (default)
+processor.process_all_traces()
+
+# Export as XES (recommended for process mining)
+processor.process_all_traces(export_as_xes=True)
+
+# Export multiple formats
+processor.process_all_traces(export_as_json=True, export_as_xes=True)
+```
+
+**Export Formats:**
+- **CSV** (default): Standard format for spreadsheet and data analysis tools
+- **JSON**: Structured format for programmatic processing
+- **XES**: IEEE standard format for process mining tools (ProM, Disco, pm4py, etc.)
+
+The XES format includes standard XES extensions (concept, time, org, identity) plus a custom AI extension for agent-specific attributes, with full compatibility with major process mining tools.
+
+Generated files are saved in the `generated_event_log/` folder.
+
+### Analyzing with Process Mining Tools
+
+The generated CSV files can be imported into:
+- **Open Source**: [ProM](http://www.promtools.org/), [pm4py](https://pm4py.fit.fraunhofer.de/), [Disco](https://fluxicon.com/disco/)
+- **Commercial**: Any process mining platform supporting CSV import
+
+**Column Configuration:**
+- **Case ID**: `case_id`
+- **Activity Name**: `concept:instance`
+- **Timestamp**: `time:timestamp`
+- **Additional Attributes**: `org:resource`, `model`, `input_tokens`, `response_tokens`, `tool`, `message`, `duration`
+
+## Repository Structure
+
+```
+ABM/
+├── src/
+│   ├── coffee_shop.py              # Main coffee shop application
+│   ├── styles.py                    # UI styling
+│   ├── agents/                      # Agent implementations
+│   │   ├── order_agent.py          # Order processing
+│   │   ├── inventory_agent.py      # Stock management
+│   │   ├── barista_agent.py        # Order preparation
+│   │   ├── customer_service_agent.py # Customer support
+│   │   └── shared_components.py    # Shared utilities
+│   └── trace_processing/            # Event log generation
+│       ├── log_generator.py        # Trace to event conversion
+│       └── trace_processor.py      # Batch processing
+├── 1_Standard_agentic_coffee_shop.ipynb    # Exercise 1: First order
+├── 2_Exceptions_agentic_coffee_shop.ipynb  # Exercise 2: Error handling
+├── 3_Extending_agentic_coffee_shop.ipynb   # Exercise 3: System extension
+├── pyproject.toml                   # Poetry configuration
+├── requirements.txt                 # Pip requirements
+└── README.md                        # This file
+```
 
 ## Exercises
-The session contains three exercises in the form of Juypter notebooks, which are self-contained and thus include the respective instructions for completing the exercise:
-1. Exercise: [`1_Standard_agentic_coffee_shop`](1_Standard_agentic_coffee_shop.ipynb). This exercise is for getting to know the overall setup and generate a first trace by interacting with the coffee shop, uploading a mapped CSV, and analyzing it with SAP Signavio Process Intelligence.
-2. Exercise [`2_Exceptions_agentic_coffee_shop`](2_Exceptions_agentic_coffee_shop.ipynb). This exercise is about exploring the behavior of the agents in case of errors and when experiencing edge cases. This will lead to several process variants by agents and shows how to analyze their differences over time.
-3. Exercise [`3_Extending_agentic_coffee_shop`](3_Extending_agentic_coffee_shop.ipynb). This exercise is for experimenting with the agents' definitions in order to change their behavior, for example, by changing their instructions and the available tools. With the help of SAP Signavio Process Intelligence, you will find out how this tool can support you in monitoring a multi-agent system during development. 
+
+The repository includes three self-contained Jupyter notebook exercises:
+
+### Exercise 1: Standard Operations
+**File**: `1_Standard_agentic_coffee_shop.ipynb`
+
+Learn the basics:
+- Set up and initialize the coffee shop
+- Place successful orders
+- Generate your first event log
+- Analyze agent behavior with process mining
+
+### Exercise 2: Exception Handling
+**File**: `2_Exceptions_agentic_coffee_shop.ipynb`
+
+Explore edge cases:
+- Handle out-of-stock scenarios
+- Deal with customer complaints
+- Analyze behavioral variants
+- Compare exception handling patterns
+
+### Exercise 3: System Extension
+**File**: `3_Extending_agentic_coffee_shop.ipynb`
+
+Experiment with agent customization:
+- Modify agent instructions
+- Add or remove agent tools
+- Monitor behavioral changes
+- Validate improvements with process mining
 
 ## Agent Architecture
 
-### 🛒 Order Agent
+### Order Agent
 **Role**: Takes and processes customer orders
+
 **Tools**:
 - `process_order()` - Parse customer orders
 - `calculate_total()` - Calculate pricing with discount capabilities
@@ -57,8 +202,9 @@ The session contains three exercises in the form of Juypter notebooks, which are
 - Calculate totals and apply discounts
 - Transfer to inventory for availability checks
 
-### 📦 Inventory Agent
+### Inventory Agent
 **Role**: Manages stock levels and availability
+
 **Tools**:
 - `check_inventory()` - Verify item availability for orders
 - `update_stock()` - Decrease inventory after confirmed orders
@@ -72,8 +218,9 @@ The session contains three exercises in the form of Juypter notebooks, which are
 - Transfer to barista when items are available
 - Escalate to customer service for stock issues
 
-### ☕ Barista Agent
+### Barista Agent
 **Role**: Handles order preparation and quality
+
 **Tools**:
 - `prepare_order()` - Simulate order preparation with realistic error handling
 - `remake_order_item()` - Handle preparation errors and remakes
@@ -86,11 +233,12 @@ The session contains three exercises in the form of Juypter notebooks, which are
 - Provide preparation time estimates
 - Quality control and remake capabilities
 
-### 🤝 Customer Service Agent
+### Customer Service Agent
 **Role**: Manages customer satisfaction and issue resolution
+
 **Tools**:
-- `offer_refund()` - Process refunds when necessary
-- `offer_partial_refund()` - Process a partial refund when necessary
+- `offer_refund()` - Process full refunds when necessary
+- `offer_partial_refund()` - Process partial refunds when appropriate
 - Handoff tools to all other agents
 
 **Responsibilities**:
@@ -99,16 +247,119 @@ The session contains three exercises in the form of Juypter notebooks, which are
 - Suggest alternatives with customer service touch
 - Coordinate with other agents for resolution
 
----
+## Event Data Model
+
+The event log captures agent behavior at a granular level, enabling comprehensive process mining analysis. Each trace includes:
+
+**Core Attributes:**
+- `case_id` - Unique conversation identifier
+- `identity:id` - Unique event identifier
+- `time:timestamp` - Event start time
+- `time_finished` - Event completion time
+- `duration` - Event duration in milliseconds
+- `concept:name` - Event type (e.g., `call_llm`, `execute_tool`)
+- `concept:instance` - Human-readable activity name
+- `org:resource` - Agent responsible for the action
+
+**GenAI-Specific Attributes:**
+- `model` - LLM model used (e.g., `gpt-4.1-2025-04-14`)
+- `input_tokens` - Tokens consumed for input
+- `response_tokens` - Tokens generated in response
+- `message` - LLM response content or user input
+- `tool` - Tool name for tool execution events
+
+**Future Enhancements:**
+Additional attributes planned for XES export:
+- `ai:response_thought` - Chain-of-thought reasoning traces
+- `ai:error` - Error details for failed operations
+- Token cost calculations
+- Detailed response metadata
+
+## Process Mining Integration Guide
+
+### Import Configuration
+
+When importing generated CSV files into your process mining tool, use these mappings:
+
+1. **Case ID Column**: `case_id`
+2. **Activity Name Column**: `concept:instance`
+3. **Timestamp Column**: `time:timestamp`
+4. **Resource Column**: `org:resource`
+
+**Additional Column Types:**
+- `identity:id` → Text
+- `concept:name` → Choice/Categorical
+- `time_finished` → DateTime
+- `duration` → Number/Numeric
+- `model` → Choice/Categorical
+- `input_tokens` → Number/Numeric
+- `response_tokens` → Number/Numeric
+- `message` → Text
+- `tool` → Choice/Categorical
+
+### Example Analyses
+
+**Process Discovery:**
+- Visualize agent interactions and handoffs
+- Identify common execution patterns
+- Discover behavioral variants
+
+**Conformance Checking:**
+- Compare actual vs. expected agent behavior
+- Detect policy violations
+- Identify missing or unexpected activities
+
+**Performance Analysis:**
+- Measure agent response times
+- Calculate token consumption and costs
+- Identify bottlenecks in agent workflows
+
+**Variant Analysis:**
+- Compare different execution paths
+- Understand non-deterministic behavior
+- Quantify behavioral consistency
+
+## Troubleshooting
+
+### Common Issues
+
+**Problem**: `ModuleNotFoundError: No module named 'langchain_openai'`
+- **Solution**: Install the LangChain integration for your provider:
+  ```bash
+  pip install "langchain[openai]<1.0.0"
+  ```
+
+**Problem**: LLM authentication errors
+- **Solution**: Verify your API key is correctly configured in `src/coffee_shop.py` (line 20+) and that your API key environment variable is set correctly.
+
+**Problem**: No trace files found
+- **Solution**: Make sure you've interacted with the coffee shop (step 3) before generating logs (step 4). Each message creates a trace.
+
+**Problem**: Jupyter kernel not found
+- **Solution**: Run `poetry jupyter install` to register the kernel, then restart Jupyter.
+
+## Research Citation
+
+This implementation is based on the research described in:
+
+**"Agent Behavior Mining: Generative AI Agent Governance in Business Processes"**
+
+For theoretical background, event data model specifications, and research methodology, please refer to the paper.
+
 ## Contributing
-Please read the [CONTRIBUTING.md](./CONTRIBUTING.md) to understand the contribution guidelines.
 
-## Code of Conduct
-Please read the [SAP Open Source Code of Conduct](https://github.com/SAP-samples/.github/blob/main/CODE_OF_CONDUCT.md).
+We welcome contributions! Please see [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines.
 
-## How to obtain support
-
-Support for the content in this repository is available during the actual time of the online session for which this content has been designed. Otherwise, you may request support via the [Issues](../../issues) tab.
+**Ways to Contribute:**
+- Report bugs or issues
+- Suggest new features or enhancements
+- Improve documentation
+- Add new agent types or tools
+- Extend the event data model
+- Implement XES export functionality
 
 ## License
-Copyright (c) 2025 SAP SE or an SAP affiliate company. All rights reserved. This project is licensed under the Apache Software License, version 2.0 except as noted otherwise in the [LICENSE](LICENSES/Apache-2.0.txt) file.
+
+Copyright (c) 2025. All rights reserved.
+
+This project is licensed under the Apache License, Version 2.0 - see the [LICENSE](LICENSES/Apache-2.0.txt) file for details.

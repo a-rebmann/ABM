@@ -1,7 +1,22 @@
+"""
+Trace Processor - Agent Behavior Mining
+
+This module processes MLflow traces from agent interactions and converts them
+into event logs suitable for process mining analysis, implementing the event data
+model described in:
+
+"Agent Behavior Mining: Generative AI Agent Governance in Business Processes"
+
+The processor transforms granular agent activities—including reasoning traces,
+tool usage, and token costs—into standardized process logs compatible with
+process mining tools.
+"""
+
 import os
 import glob
 from typing import List
 from .log_generator import LogGenerator
+from .xes_exporter import XESExporter
 import pandas as pd
 from datetime import datetime
 
@@ -24,9 +39,13 @@ class TraceProcessor:
         
         return trace_files
     
-    def process_all_traces(self, export_as_json: bool = False):
+    def process_all_traces(self, export_as_json: bool = False, export_as_xes: bool = False):
         """
         Process all trace files found in the MLflow directory.
+        
+        Args:
+            export_as_json: If True, exports as JSON instead of CSV
+            export_as_xes: If True, also exports in XES format for process mining tools
         """
 
         print("🔍 Searching for trace files...")
@@ -60,8 +79,12 @@ class TraceProcessor:
         # Sort combined logs by timestamp
         combined_logs.sort_values(by="time:timestamp", inplace=True)
         
-
+        # Generate log files
         self._generate_log_file(combined_logs, "./generated_event_log", json_format=export_as_json)
+        
+        # Also generate XES if requested
+        if export_as_xes:
+            self._generate_xes_file(combined_logs, "./generated_event_log")
 
         print(f"\n📈 Processing Summary:")
         print(f"   📊 Total trace files processed: {len(trace_files)}")
@@ -83,6 +106,7 @@ class TraceProcessor:
         Args:
             dataframe: The DataFrame containing event log data
             output_path: The path to save the generated log file
+            json_format: If True, exports as JSON instead of CSV
         """
         if not os.path.exists(output_path):
             os.makedirs(output_path)
@@ -101,6 +125,29 @@ class TraceProcessor:
                 dataframe.to_json(file_path, orient="index")
             else:
                 dataframe.to_csv(file_path, index=False)
-            print(f"\n✅ Log file generated at {file_path}")
+            print(f"\n✅ CSV/JSON log file generated at {file_path}")
         except Exception as e:
-            print(f"\n″❌ Failed to generate log file at {file_path}: {e}")
+            print(f"\n❌ Failed to generate log file at {file_path}: {e}")
+    
+    def _generate_xes_file(self, dataframe: pd.DataFrame, output_path: str):
+        """
+        Generate a XES file from the given DataFrame.
+        
+        Args:
+            dataframe: The DataFrame containing event log data
+            output_path: The path to save the generated XES file
+        """
+        if not os.path.exists(output_path):
+            os.makedirs(output_path)
+
+        timestamp = datetime.now().strftime("%Y%m%dT%H%M%S%f")[:-3]  # UTC timestamp with ms
+        filename = f"{timestamp}.eventlog.xes"
+        file_path = os.path.join(output_path, filename)
+        
+        try:
+            exporter = XESExporter()
+            exporter.export_to_xes(dataframe, file_path)
+            print(f"✅ XES log file generated at {file_path}")
+            print(f"   This file can be imported into ProM, Disco, pm4py, and other process mining tools")
+        except Exception as e:
+            print(f"❌ Failed to generate XES file at {file_path}: {e}")

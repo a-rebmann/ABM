@@ -1,3 +1,14 @@
+"""
+Coffee Shop Multi-Agent System
+
+This module implements the multi-agent Order-to-Cash coffee shop scenario
+described in the research paper:
+"Agent Behavior Mining: Generative AI Agent Governance in Business Processes"
+
+The system demonstrates how multiple GenAI agents collaborate to handle
+customer orders while capturing detailed behavioral traces for process mining analysis.
+"""
+
 from langgraph_swarm import create_swarm
 from langgraph.checkpoint.memory import InMemorySaver
 import mlflow

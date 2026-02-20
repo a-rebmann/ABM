@@ -1,3 +1,15 @@
+"""
+Event Log Generator - Agent Behavior Mining
+
+This module generates standardized event logs from agent traces, implementing
+the event data model described in:
+
+"Agent Behavior Mining: Generative AI Agent Governance in Business Processes"
+
+It translates agent activities (LLM calls, tool executions, agent handoffs) into
+XES-compatible event attributes for process mining analysis.
+"""
+
 import json
 import json
 import uuid

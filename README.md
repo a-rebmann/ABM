@@ -100,10 +100,10 @@ from src import TraceProcessor
 
 processor = TraceProcessor()
 
-# Export as CSV (default)
+# Export as CSV 
 processor.process_all_traces()
 
-# Export as XES (recommended for process mining)
+# Export as XES 
 processor.process_all_traces(export_as_xes=True)
 
 # Export multiple formats
@@ -111,7 +111,7 @@ processor.process_all_traces(export_as_json=True, export_as_xes=True)
 ```
 
 **Export Formats:**
-- **CSV** (default): Standard format for spreadsheet and data analysis tools
+- **CSV**: Standard format for spreadsheet and data analysis tools
 - **JSON**: Structured format for programmatic processing
 - **XES**: IEEE standard format for process mining tools (ProM, pm4py, etc.)
 
@@ -121,15 +121,9 @@ Generated files are saved in the `generated_event_log/` folder.
 
 ### Analyzing with Process Mining Tools
 
-The generated CSV files can be imported into:
+The generated files can be imported into:
 - **Open Source**: [ProM](http://www.promtools.org/), [pm4py](https://pm4py.fit.fraunhofer.de/)
 - **Commercial**: Any process mining platform supporting CSV import
-
-**Column Configuration:**
-- **Case ID**: `case_id`
-- **Activity Name**: `concept:instance`
-- **Timestamp**: `time:timestamp`
-- **Additional Attributes**: `org:resource`, `model`, `input_tokens`, `response_tokens`, `tool`, `message`, `duration`
 
 ## Repository Structure
 
@@ -162,7 +156,7 @@ The repository includes three self-contained Jupyter notebook exercises:
 ### Exercise 1: Standard Operations
 **File**: `1_Standard_agentic_coffee_shop.ipynb`
 
-Learn the basics:
+The basics:
 - Set up and initialize the coffee shop
 - Place successful orders
 - Generate your first event log
@@ -247,78 +241,6 @@ Experiment with agent customization:
 - Suggest alternatives with customer service touch
 - Coordinate with other agents for resolution
 
-## Event Data Model
-
-The event log captures agent behavior at a granular level, enabling comprehensive process mining analysis. Each trace includes:
-
-**Core Attributes:**
-- `case_id` - Unique conversation identifier
-- `identity:id` - Unique event identifier
-- `time:timestamp` - Event start time
-- `time_finished` - Event completion time
-- `duration` - Event duration in milliseconds
-- `concept:name` - Event type (e.g., `call_llm`, `execute_tool`)
-- `concept:instance` - Human-readable activity name
-- `org:resource` - Agent responsible for the action
-
-**GenAI-Specific Attributes:**
-- `model` - LLM model used (e.g., `gpt-4.1-2025-04-14`)
-- `input_tokens` - Tokens consumed for input
-- `response_tokens` - Tokens generated in response
-- `message` - LLM response content or user input
-- `tool` - Tool name for tool execution events
-
-**Future Enhancements:**
-Additional attributes planned for XES export:
-- `ai:response_thought` - Chain-of-thought reasoning traces
-- `ai:error` - Error details for failed operations
-- Token cost calculations
-- Detailed response metadata
-
-## Process Mining Integration Guide
-
-### Import Configuration
-
-When importing generated CSV files into your process mining tool, use these mappings:
-
-1. **Case ID Column**: `case_id`
-2. **Activity Name Column**: `concept:instance`
-3. **Timestamp Column**: `time:timestamp`
-4. **Resource Column**: `org:resource`
-
-**Additional Column Types:**
-- `identity:id` → Text
-- `concept:name` → Choice/Categorical
-- `time_finished` → DateTime
-- `duration` → Number/Numeric
-- `model` → Choice/Categorical
-- `input_tokens` → Number/Numeric
-- `response_tokens` → Number/Numeric
-- `message` → Text
-- `tool` → Choice/Categorical
-
-### Example Analyses
-
-**Process Discovery:**
-- Visualize agent interactions and handoffs
-- Identify common execution patterns
-- Discover behavioral variants
-
-**Conformance Checking:**
-- Compare actual vs. expected agent behavior
-- Detect policy violations
-- Identify missing or unexpected activities
-
-**Performance Analysis:**
-- Measure agent response times
-- Calculate token consumption and costs
-- Identify bottlenecks in agent workflows
-
-**Variant Analysis:**
-- Compare different execution paths
-- Understand non-deterministic behavior
-- Quantify behavioral consistency
-
 ## Troubleshooting
 
 ### Common Issues
@@ -338,28 +260,5 @@ When importing generated CSV files into your process mining tool, use these mapp
 **Problem**: Jupyter kernel not found
 - **Solution**: Run `poetry jupyter install` to register the kernel, then restart Jupyter.
 
-## Research Citation
-
-This implementation is based on the research described in:
-
-**"Agent Behavior Mining: Generative AI Agent Governance in Business Processes"**
-
-For theoretical background, event data model specifications, and research methodology, please refer to the paper.
-
-## Contributing
-
-We welcome contributions! Please see [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines.
-
-**Ways to Contribute:**
-- Report bugs or issues
-- Suggest new features or enhancements
-- Improve documentation
-- Add new agent types or tools
-- Extend the event data model
-- Implement XES export functionality
-
 ## License
-
-Copyright (c) 2025. All rights reserved.
-
 This project is licensed under the Apache License, Version 2.0 - see the [LICENSE](LICENSES/Apache-2.0.txt) file for details.

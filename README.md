@@ -144,6 +144,16 @@ ABM/
 ├── 1_Standard_agentic_coffee_shop.ipynb    # Exercise 1: First order
 ├── 2_Exceptions_agentic_coffee_shop.ipynb  # Exercise 2: Error handling
 ├── 3_Extending_agentic_coffee_shop.ipynb   # Exercise 3: System extension
+├── assets/                          # Supplementary materials
+│   ├── Case Study Agent Event Log.csv      # Event log from the case study
+│   ├── sample_log_agentic_coffee_shop.csv  # Sample event log
+│   ├── Survey_instrument.pdf               # Survey instrument used in the study
+│   ├── Exercise 1.png                      # Exercise 1 illustration
+│   ├── Exercise 2.png                      # Exercise 2 illustration
+│   ├── Exercise 3.png                      # Exercise 3 illustration
+│   └── dashboard/                          # Process mining analysis dashboard
+│       ├── Case Study-Analysis Dashboard.json  # Dashboard definition
+│       └── README.md                           # Dashboard usage notes
 ├── pyproject.toml                   # Poetry configuration
 ├── requirements.txt                 # Pip requirements
 └── README.md                        # This file

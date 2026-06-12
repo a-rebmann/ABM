@@ -21,7 +21,7 @@ For theoretical background on Agent Behavior Mining, the invisible autonomy risk
 - **Multi-Agent System**: Complete implementation using LangGraph and LangChain
 - **Automatic Trace Collection**: Captures all agent activities 
 - **Event Log Generation**: Converts agent traces to standardized process logs
-- **XES and CSV Export**: Event logs compatible with any process mining tool
+- **XES and CSV Export**: Event logs compatible with process mining tools supporting these formats
 - **Interactive Interface**: Jupyter notebook-based user interface
 - **Three Exercises**: Guided tutorials covering standard operations, exception handling, and system extension
 - **Process Mining Ready**: Usable for analysis with ProM, pm4py, or commercial tools
@@ -115,7 +115,7 @@ processor.process_all_traces(export_as_json=True, export_as_xes=True)
 - **JSON**: Structured format for programmatic processing
 - **XES**: IEEE standard format for process mining tools (ProM, pm4py, etc.)
 
-The XES format includes standard XES extensions (concept, time, org, identity) plus a custom AI extension for agent-specific attributes, with full compatibility with major process mining tools.
+The XES format includes standard XES extensions (concept, time, org, identity) plus a custom AI extension for agent-specific attributes, with compatibility with process mining tools.
 
 Generated files are saved in the `generated_event_log/` folder.
 
@@ -123,7 +123,7 @@ Generated files are saved in the `generated_event_log/` folder.
 
 The generated files can be imported into:
 - **Open Source**: [ProM](http://www.promtools.org/), [pm4py](https://pm4py.fit.fraunhofer.de/)
-- **Commercial**: Any process mining platform supporting CSV import
+- **Commercial**: Process mining platform supporting CSV/XES import
 
 ## Repository Structure
 
